@@ -57,11 +57,13 @@ import pickle
 
 df = pd.read_csv('./uubar.csv')
 AUC = {}
+Acc = {}
 for kappa in [0, 0.3, 0.5, 0.7, 1]:
     AUC[kappa] = []
-
+    Acc[kappa] = []
+for num in [1000, 1500, 2000]:
+    print("num:", num)
 #for num in [10, 20, 50, 100, 200, 500]:
-for num in [10, 20]:
     df_up = df[df['jet_type'] == 1].sample(n=num, random_state=42)
     df_antiup = df[df['jet_type'] == 0].sample(n=num, random_state=42)
     final_df = pd.concat([df_up, df_antiup], ignore_index=True)
@@ -89,11 +91,16 @@ for num in [10, 20]:
         auc_score = round(roc_auc_score(y_test, y_probs), 4)
         print(f'AUC Score: {auc_score}')
 
+        predict = qsvm.predict(X_test)
+        acc = round(qsvm.score(X_test, y_test), 4)
+        print(f'ACC: {acc}')
+
         # Compute ROC curve
         fpr, tpr, thresholds = roc_curve(y_test, y_probs)
 
         # AUC append
         AUC[kappa].append(auc_score)        
+        Acc[kappa].append(acc) 
 
         if False:
             plt.figure()
@@ -111,6 +118,7 @@ for num in [10, 20]:
             print(f, " is created")
             pickle.dump(qsvm,f)
 print(AUC)            
+print(Acc)
 '''
 for kappa in [0, 0.3, 0.5, 0.7, 1]:    
     with open('./models/model_'+str(kappa)+'.pkl', 'rb') as f:
