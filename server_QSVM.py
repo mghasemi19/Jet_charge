@@ -58,12 +58,15 @@ import pickle
 df = pd.read_csv('./uubar.csv')
 AUC = {}
 Acc = {}
+train_Acc = {}
 for kappa in [0, 0.3, 0.5, 0.7, 1]:
     AUC[kappa] = []
     Acc[kappa] = []
-for num in [1000, 1500, 2000]:
-    print("num:", num)
+    train_Acc[kappa] = []
+#for num in [1000, 1500, 2000]:    
 #for num in [10, 20, 50, 100, 200, 500]:
+for num in [10, 20]:
+    print("num:", num)
     df_up = df[df['jet_type'] == 1].sample(n=num, random_state=42)
     df_antiup = df[df['jet_type'] == 0].sample(n=num, random_state=42)
     final_df = pd.concat([df_up, df_antiup], ignore_index=True)
@@ -93,7 +96,11 @@ for num in [1000, 1500, 2000]:
 
         predict = qsvm.predict(X_test)
         acc = round(qsvm.score(X_test, y_test), 4)
-        print(f'ACC: {acc}')
+        print(f'Test ACC: {acc}')
+
+        train_predict = qsvm.predict(X_train)
+        train_acc = round(qsvm.score(X_train, y_train), 4)
+        print(f'Train ACC: {train_acc}')        
 
         # Compute ROC curve
         fpr, tpr, thresholds = roc_curve(y_test, y_probs)
@@ -101,6 +108,7 @@ for num in [1000, 1500, 2000]:
         # AUC append
         AUC[kappa].append(auc_score)        
         Acc[kappa].append(acc) 
+        train_Acc[kappa].append(train_acc) 
 
         if False:
             plt.figure()
@@ -117,8 +125,10 @@ for num in [1000, 1500, 2000]:
         with open('./models/model_'+str(num)+'_'+str(kappa)+'.pkl','wb') as f:
             print(f, " is created")
             pickle.dump(qsvm,f)
-print(AUC)            
-print(Acc)
+print("AUC:", AUC)            
+print("Test Acc:", Acc)
+print("Train Acc:", train_Acc)
+
 '''
 for kappa in [0, 0.3, 0.5, 0.7, 1]:    
     with open('./models/model_'+str(kappa)+'.pkl', 'rb') as f:
