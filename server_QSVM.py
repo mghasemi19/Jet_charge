@@ -74,7 +74,7 @@ for num in [10, 20]:
 
     for kappa in [0, 0.3, 0.5, 0.7, 1]:    
         columns = [col for col in cols if col.startswith('Q_') and col.endswith('_'+str(kappa))]
-        #print(columns)
+        print(columns)
         X = final_df[columns].values
         y = final_df['jet_type'].values.reshape(-1)
         X_train, X_test, y_train, y_test = train_test_split(X, y, test_size=0.3, random_state=42, stratify=y)
