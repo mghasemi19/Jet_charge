@@ -5,7 +5,7 @@ Jet charge computation using classical and quantum machine learning is an innova
 </div>
 
 <p align="center">
-<img width="400" alt="Screen Shot 2024-08-06 at 4 38 10 PM" src="https://github.com/user-attachments/assets/21057e19-f044-428d-959b-d4fc74660e07">
+<img width="900" alt="Screen Shot 2024-08-06 at 4 38 10 PM" src="https://github.com/user-attachments/assets/219927a9-389a-47a4-bf94-7a86bab0a64a">
 </p>
 
 ## Running the Code to Generate Ntuples and Apply Machine Learning Models
